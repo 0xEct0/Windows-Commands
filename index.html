@@ -130,9 +130,8 @@
         <br>
 
         <button class="filter_button" style="margin-left: 60px;" onclick="clearFields();">Show All</button>
-        <button class="filter_button" onclick="filterButton('WinDbg');">WinDbg</button>
-        <button class="filter_button" onclick="filterButton('GDB');">GDB</button>
-        <button class="filter_button" onclick="filterButton('GDB-PWNDBG');">GDB-PWNDBG</button>
+        <button class="filter_button" onclick="filterButton('cmd');">WinDbg</button>
+        <button class="filter_button" onclick="filterButton('powershell');">GDB</button>
 
         <br>
         <br>
@@ -182,7 +181,7 @@ fetch(command_list_url)
             new_cell2 = new_row.insertCell(1);  // creates second cell
             new_cell3 = new_row.insertCell(2); // creates third cell
             new_cell1.innerHTML = tool_json[i].command; // inserts command
-            new_cell2.innerHTML = "[" + tool + "] " + tool_json[i].description; // inserts description
+            new_cell2.innerHTML = tool_json[i].description; // inserts description
             new_cell3.innerHTML = tool_json[i].example;
         }        
     }
@@ -258,7 +257,7 @@ function clearFields()
                 new_cell2 = new_row.insertCell(1);  // creates second cell
                 new_cell3 = new_row.insertCell(2); // creates third cell
                 new_cell1.innerHTML = tool_json[i].command; // inserts command
-                new_cell2.innerHTML = "[" + tool + "] " + tool_json[i].description; // inserts description
+                new_cell2.innerHTML = tool_json[i].description; // inserts description
                 new_cell3.innerHTML = tool_json[i].example;       
             }        
         }
@@ -324,7 +323,7 @@ function filterButton(chosenFilter)
             new_cell2 = new_row.insertCell(1);  // creates second cell
             new_cell3 = new_row.insertCell(2); // creates third cell
             new_cell1.innerHTML = chosen_command[i].command; // inserts command
-            new_cell2.innerHTML = "[" + chosenFilter + "] " + chosen_command[i].description; // inserts description
+            new_cell2.innerHTML = chosen_command[i].description; // inserts description
             new_cell3.innerHTML = chosen_command[i].example;      
         }
     });
