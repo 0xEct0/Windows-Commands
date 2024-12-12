@@ -1,0 +1,30 @@
+
+{
+    "WinDbg": 
+    [
+        {
+            "command": "!address",
+            "description": "Displays information about the memory that the target process or target computer uses",
+            "example": "!address 75831234"
+        }
+    ],
+  
+    "GDB":
+    [
+        {
+            "command": "b main",
+            "description": "Puts a breakpoint at the beginning of the program",
+            "example": ""
+        }   
+    ],
+
+    "GDB-PWNDBG":
+    [
+ 
+        {
+            "command": "cyclic -n [pattern size] [length]",
+            "description": "Generate a cyclic pattern to use",
+            "example": "cyclic -n 4 100"
+        }
+    ]
+}
