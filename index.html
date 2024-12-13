@@ -39,22 +39,20 @@
         }
         #DebugTable {
             margin-left: 60px;
-            border-collapse: collapse;
+            border-collapse: separate; /* Enables cell borders */
+            border-spacing: 0; /* Removes spacing between cells */
             word-wrap: break-word;
             table-layout: fixed;
             width: 85%;
         }
         #DebugTable th, #DebugTable td {
             padding: 8px;
-            border: none; /* Removed cell borders */
+            border: 2px solid #44475a; /* Added borders */
         }
         #DebugTable th {
             background-color: #6272a4;
             font-family: monospace;
             font-size: 25px;
-        }
-        #DebugTable td {
-            font-size: 16px;
         }
         #DebugTable td:nth-child(2) { /* Sets the middle column to Consolas font */
             font-family: "Consolas", monospace;
@@ -62,6 +60,7 @@
         .filter_button {
             background-color: #44475a;
             border: 2px solid #ff79c6;
+            color: white; /* Button text color */
             padding: 16px 32px;
             text-align: center;
             text-decoration: none;
@@ -73,6 +72,7 @@
         }
         .filter_button:hover, .filter_button.active {
             background-color: #6272a4;
+            color: white; /* Ensures text remains white on active/hover */
         }
     </style>
 </head>
