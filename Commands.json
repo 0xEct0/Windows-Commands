@@ -3,9 +3,9 @@
     "cmd": 
     [
         {
-            "command": "!address",
-            "description": "Displays information about the memory that the target process or target computer uses",
-            "example": "!address 75831234"
+            "command": "netstat -anop tcp",
+            "description": "Displays listening ports",
+            "example": "netstat -anop tcp"
         }
     ],
   
