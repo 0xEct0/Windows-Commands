@@ -39,15 +39,14 @@
         }
         #DebugTable {
             margin-left: 60px;
-            border: 1px solid #bd6f5c;
             border-collapse: collapse;
             word-wrap: break-word;
             table-layout: fixed;
             width: 85%;
         }
         #DebugTable th, #DebugTable td {
-            border: 2px solid #44475a;
             padding: 8px;
+            border: none; /* Removed cell borders */
         }
         #DebugTable th {
             background-color: #6272a4;
@@ -56,6 +55,9 @@
         }
         #DebugTable td {
             font-size: 16px;
+        }
+        #DebugTable td:nth-child(2) { /* Sets the middle column to Consolas font */
+            font-family: "Consolas", monospace;
         }
         .filter_button {
             background-color: #44475a;
@@ -83,8 +85,8 @@
     </div>
     <br><br>
     <button class="filter_button" style="margin-left: 60px;" onclick="resetFilters();">Reset</button>
-    <button class="filter_button" onclick="filterButton('cmd', event);">cmd</button>
-    <button class="filter_button" onclick="filterButton('powershell', event);">powershell</button>
+    <button class="filter_button" onclick="filterButton('cmd', event);">Command Prompt</button>
+    <button class="filter_button" onclick="filterButton('powershell', event);">PowerShell</button>
     <br><br>
     <table id="DebugTable">
         <tr class="header">
