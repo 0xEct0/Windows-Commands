@@ -4,15 +4,24 @@
     <title>Windows Commands</title>
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/0xEct0/Windows-Commands/main/favicon.png">
     <style>
-        p {
+        body {
+            background-color: #282a36;
+            color: #f8f8f2; /* Ensures all text is white unless otherwise specified */
             font-family: "Helvetica Neue", "Arial", "sans-serif";
+        }
+        h1 {
+            font-family: monospace;
+            margin-left: 60px;
+            font-size: 40px;
+        }
+        p {
             font-size: 20px;
             margin-left: 60px;
             width: 830px;
             float: left;
         }
         input[type=text] {
-            width: 255px;
+            width: 85%;
             box-sizing: border-box;
             border: 2px solid #8be9fd;
             border-radius: 4px;
@@ -22,9 +31,9 @@
             -webkit-transition: width 0.5s ease-in-out;
             transition: width 0.4s ease-in-out;
             color: #f5fab9;
+            margin-left: 60px; /* Aligns the search bar with the buttons */
         }
         input[type=text]:focus {
-            width: 85%;
             border: 2px solid #8fffab;
             outline: none !important;
         }
@@ -35,29 +44,22 @@
             word-wrap: break-word;
             table-layout: fixed;
             width: 85%;
-            color: #f8f8f2;
+        }
+        #DebugTable th, #DebugTable td {
+            border: 2px solid #44475a;
+            padding: 8px;
         }
         #DebugTable th {
             background-color: #6272a4;
-            border: 1px solid #44475a;
-            padding: 8px;
             font-family: monospace;
             font-size: 25px;
-            text-align: left;
         }
         #DebugTable td {
-            border: 2px solid #44475a;
-            padding: 8px;
-            font-family: "Helvetica Neue", "Arial", sans-serif;
             font-size: 16px;
-        }
-        #DebugTable td:nth-child(1), #DebugTable td:nth-child(3) {
-            font-family: monospace;
         }
         .filter_button {
             background-color: #44475a;
             border: 2px solid #ff79c6;
-            color: #f8f8f2;
             padding: 16px 32px;
             text-align: center;
             text-decoration: none;
@@ -69,19 +71,18 @@
         }
         .filter_button:hover, .filter_button.active {
             background-color: #6272a4;
-            color: white;
         }
     </style>
 </head>
-<body style="background-color: #282a36">
-    <h1 style="font-family: monospace; margin-left:60px; font-size:40px; color: #f8f8f2">Debugger Commands</h1>
-    <p>This page serves as a reference for various Windows commands commonly used in both command line and in PowerShell.<br>This page can be filtered by either command line or PowerShell commands. Use the buttons below to filter.</p>
+<body>
+    <h1>Debugger Commands</h1>
+    <p>This page serves as a reference for various Windows commands commonly used in both command line and in PowerShell. This page can be filtered by either command line or PowerShell commands. Use the buttons below to filter.</p>
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     <div class="search-box">
         <input type="text" id="inputFilter" placeholder="Type in a keyword..." onkeyup="typeFilter()">
     </div>
     <br><br>
-    <button class="filter_button" style="margin-left: 60px;" onclick="clearFields();">Show All</button>
+    <button class="filter_button" style="margin-left: 60px;" onclick="resetFilters();">Reset</button>
     <button class="filter_button" onclick="filterButton('cmd', event);">cmd</button>
     <button class="filter_button" onclick="filterButton('powershell', event);">powershell</button>
     <br><br>
@@ -139,7 +140,7 @@
         });
     }
 
-    function clearFields() {
+    function resetFilters() {
         document.getElementById("inputFilter").value = "";
         clearTable();
         fetchAndUpdateTable();
@@ -147,7 +148,6 @@
         buttons.forEach(button => {
             button.classList.remove('active');
         });
-        document.querySelector('.filter_button[style*="margin-left: 60px"]').classList.add('active');
     }
 
     function filterButton(chosenFilter, event) {
