@@ -153,7 +153,6 @@
     }
 
     function filterButton(chosenFilter, event) {
-        document.getElementById("inputFilter").value = "";
         fetchAndUpdateTable(chosenFilter);
         var buttons = document.querySelectorAll('.filter_button');
         buttons.forEach(button => {
@@ -166,5 +165,6 @@
         fetchAndUpdateTable();  // Load all commands initially
     });
     </script>
+
 </body>
 </html>
