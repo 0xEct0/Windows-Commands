@@ -130,8 +130,8 @@
         <br>
 
         <button class="filter_button" style="margin-left: 60px;" onclick="clearFields();">Show All</button>
-        <button class="filter_button" onclick="filterButton('cmd');">WinDbg</button>
-        <button class="filter_button" onclick="filterButton('powershell');">GDB</button>
+        <button class="filter_button" onclick="filterButton('cmd');">cmd</button>
+        <button class="filter_button" onclick="filterButton('powershell');">powershell</button>
 
         <br>
         <br>
@@ -147,7 +147,7 @@
 </html>
 
 <script>
-
+/*
 // ======================================
 // MAY NEED TO CHANGE THE FOLLOWING BELOW
 // ======================================
@@ -328,4 +328,74 @@ function filterButton(chosenFilter)
         }
     });
 }
+*/
+
+// ======================================
+// MAY NEED TO CHANGE THE FOLLOWING BELOW
+// ======================================
+var toolList = ["cmd", "powershell"];
+var command_list_url = 'https://raw.githubusercontent.com/0xEct0/Windows-Commands/main/Commands.json';
+
+// Fetches commands and updates the table
+function fetchAndUpdateTable(filter = null) {
+    fetch(command_list_url)
+        .then(response => response.json())
+        .then(myJson => {
+            var tbl = document.getElementById('DebugTable');
+            clearTable();
+            toolList.forEach(tool => {
+                if (!filter || tool === filter) {
+                    myJson[tool].forEach(command => {
+                        addCommandToTable(tbl, command);
+                    });
+                }
+            });
+        });
+}
+
+// Adds a command to the table
+function addCommandToTable(tbl, command) {
+    var new_row = tbl.insertRow(-1);
+    var new_cell1 = new_row.insertCell(0);
+    var new_cell2 = new_row.insertCell(1);
+    var new_cell3 = new_row.insertCell(2);
+    new_cell1.innerHTML = command.command;
+    new_cell2.innerHTML = command.description;
+    new_cell3.innerHTML = command.example;
+}
+
+// Clears the table except for the header
+function clearTable() {
+    var table = document.getElementById("DebugTable");
+    while (table.rows.length > 1) {
+        table.deleteRow(1);
+    }
+}
+
+// Text field search
+function typeFilter() {
+    var filter = document.getElementById('inputFilter').value;
+    var trs = document.querySelectorAll('#DebugTable tr:not(.header)');
+    trs.forEach(tr => {
+        var match = Array.from(tr.children).some(td => RegExp(filter, 'i').test(td.innerHTML));
+        tr.style.display = match ? '' : 'none';
+    });
+}
+
+// Clears the fields and shows everything
+function clearFields() {
+    document.getElementById("inputFilter").value = "";
+    clearTable();
+    fetchAndUpdateTable();
+}
+
+// Show only specific tool commands
+function filterButton(chosenFilter) {
+    document.getElementById("inputFilter").value = "";
+    fetchAndUpdateTable(chosenFilter);
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    fetchAndUpdateTable();  // Load all commands initially
+});
 </script>
