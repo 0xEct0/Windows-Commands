@@ -6,15 +6,25 @@
             "command": "netstat -anop tcp",
             "description": "Displays listening ports",
             "example": "netstat -anop tcp"
+        },
+        {
+            "command": "sc query",
+            "description": "See services installed on a machine",
+            "example": "sc query"
+        },
+        {
+            "command": "wmic service get name, pathname",
+            "description": "Using WMIC to pull a list of every service and the path to its executable",
+            "example": "wmic service get name, pathname"
         }
     ],
   
     "powershell":
     [
         {
-            "command": "b main",
-            "description": "Puts a breakpoint at the beginning of the program",
-            "example": ""
+            "command": "Get-Service",
+            "description": "Gets objects that represent the services on a local computer or on a remote computer. Can be piped into fl to display all available properties of each service object in a list format",
+            "example": "Get-Service | fl"
         }   
     ]
 }
