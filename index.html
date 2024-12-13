@@ -1,401 +1,168 @@
-<!--    
-    todo
-        - filter based on buttons
-        - combine filters
- -->
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>
-            Windows Commands
-        </title>
-        <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/0xEct0/Windows-Commands/main/favicon.png">
-        <style>
-            p
-            {
-                font-family: "Helvetica Neue", "Arial", "sans-serif";
-                font-size: 20px;
-                margin-left: 60px;
-                width: 830px;
-                float: left;
-            }
-            input[type=text]
-            {
-                width: 255px;
-                box-sizing: border-box;
-                border: 2px solid #8be9fd;
-                border-radius: 4px;
-                font-size: 16px;
-                background-color: #44475a;
-                background-position: 10px 10px; 
-                background-repeat: no-repeat;
-                padding: 12px 20px 12px 40px;
-                -webkit-transition: width 0.5s ease-in-out;
-                transition: width 0.4s ease-in-out;
-            }
-            input[type=text]:focus 
-            {
-                width: 85%;
-                border: 2px solid #8fffab;
-                outline: none !important;
-            }
-            #DebugTable
-            {
-                margin-left: 60px;
-                margin-right: 0px;
-                border: 1px solid #bd6f5c;
-                border-right: none;
-                border-left: none;
-                border-collapse: collapse;
-                word-wrap: break-word;
-                table-layout: fixed;
-                width: 85%;
-                color: #f8f8f2
-            }
-            #DebugTable th
-            {
-                background-color: #6272a4;
-                border: 1px solid #44475a;
-                border-right: none;
-                border-left: none;
-                color: white;
-                padding-top: 12px;
-                padding-bottom: 12px;
-                padding: 8px;
-                font-family: monospace;
-                font-size: 25px;
-                text-align: left;
-                width:"50%";
-            }
-            #DebugTable td
-            {
-                border: 2px solid #44475a;
-                border-right: none;
-                border-left: none;
-                padding: 8px;
-                font-family: "Helvetica Neue", "Arial", sans-serif;
-                font-size: 16px
-            }
-            #DebugTable td:nth-child(1)
-            {
-                font-family: monospace;
-            }
-            #DebugTable td:nth-child(3)
-            {
-                font-family: monospace;
-            }
-            .filter_button
-            {
-                background-color: #44475a;
-                border: 2px solid #ff79c6;
-                color: #f8f8f2;
-                padding: 16px 32px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 16px;
-                margin: 4px 2px;
-                transition-duration: 0.4s;
-                cursor: pointer;
-            }
-            .filter_button:hover
-            {
-                background-color: #6272a4;
-                color: white;
-            }
-        </style>
-    </head>
-    <body style="background-color: #282a36">
-        <h1 style="font-family: monospace; margin-left:60px; font-size:40px; color: #f8f8f2">
-            Debugger Commands
-            <br>
-        </h1>
-
-        
-        
-        <p style="color:#f8f8f2">
-            This page serves as a reference for various Windows commands commonly used in both command line and in PowerShell.
-            <br>
-            <br>
-            This page is casn be filtered by either command line or PowerShell commands. Use the bottons below to filter.
-        </p>
-
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
-        <div class="search-box">
-            <input type="text" id="inputFilter" placeholder="Type in a keyword..." style="margin-left: 60px; color:#f5fab9" onkeyup="typeFilter()">
-        </div>
-
-        <br>
-        <br>
-
-        <button class="filter_button" style="margin-left: 60px;" onclick="clearFields();">Show All</button>
-        <button class="filter_button" onclick="filterButton('cmd');">cmd</button>
-        <button class="filter_button" onclick="filterButton('powershell');">powershell</button>
-
-        <br>
-        <br>
-
-        <table id="DebugTable">
-            <tr class="header">
-                <th width="33%">Command</th>
-                <th width="33%">Description</th>
-                <th width="33%">Example</th>
-            </tr>
-        </table>
-    </body>
-</html>
-
-<script>
-/*
-// ======================================
-// MAY NEED TO CHANGE THE FOLLOWING BELOW
-// ======================================
-var toolList = ["cmd", "powershell"] // Add all of the debugging tools in this list, need to manually update it when making changes
-
-var command_list_url = 'https://raw.githubusercontent.com/0xEct0/Windows-Commands/main/Commands.json'
-
-fetch(command_list_url)
-.then((response) => 
-{
-    return response.json();
-})
-.then((myJson) => 
-{  
-    // initialize variables to add to table
-    var tbl = document.getElementById('DebugTable');
-    var new_row; // the new row to be added
-    var new_cell1; // first cell in new row
-    var new_cell2; // second cell in new row
-    var new_cell3; // third cell in new row
-    
-    for (var j = 0; j < toolList.length; j++)
-    {
-        var tool = toolList[j];
-        var tool_json = myJson[tool];
-        var length = tool_json.length;
-        for (var i = 0; i < length; i++)
-        {
-            new_row = tbl.insertRow(-1);
-            new_cell1 = new_row.insertCell(0); // creates first cell
-            new_cell2 = new_row.insertCell(1);  // creates second cell
-            new_cell3 = new_row.insertCell(2); // creates third cell
-            new_cell1.innerHTML = tool_json[i].command; // inserts command
-            new_cell2.innerHTML = tool_json[i].description; // inserts description
-            new_cell3.innerHTML = tool_json[i].example;
-        }        
-    }
-});
-
-// Text field search
-const typeFilter = () =>
-{
-    const trs = document.querySelectorAll('#DebugTable tr:not(.header)');
-    const filter = document.querySelector('#inputFilter').value;
-    const regex = new RegExp(filter, 'i');
-    const isFoundInTds = (td) => regex.test(td.innerHTML);
-    const isFound = (childrenArr) => childrenArr.some(isFoundInTds);
-    const setTrStyleDisplay = ({ style, children }) => 
-    {
-        style.display = isFound([...children]) ? '' : 'none';
-    };
-  
-    trs.forEach(setTrStyleDisplay);
-};
-
-
-// Clears the fields and shows everything
-function clearFields()
-{
-    // Clear the search bar text
-    document.getElementById("inputFilter").value = "";
-    
-    // Clear the text search filter
-    const trs = document.querySelectorAll('#DebugTable tr:not(.header)');
-    const filter = document.querySelector('#inputFilter').value;
-    const regex = new RegExp(filter, 'i');
-    const isFoundInTds = (td) => regex.test(td.innerHTML);
-    const isFound = (childrenArr) => childrenArr.some(isFoundInTds);
-    const setTrStyleDisplay = ({ style, children }) => 
-    {
-        style.display = isFound([...children]) ? '' : 'none';
-    };
-    trs.forEach(setTrStyleDisplay);
-    
-    // Clear table except header
-    var table = document.getElementById("DebugTable");
-    for(var i = table.rows.length - 1; i > 0; i--)
-    {
-        table.deleteRow(i);
-    }
-
-    // Show everything
-    fetch(command_list_url)
-    .then((response) => 
-    {
-        return response.json();
-    })
-    .then((myJson) => 
-    {  
-        // initialize variables to add to table
-        var tbl = document.getElementById('DebugTable');
-        var new_row; // the new row to be added
-        var new_cell1; // first cell in new row
-        var new_cell2; // second cell in new row
-        var new_cell3; // third cell in new row
-        
-        for (var j = 0; j < toolList.length; j++)
-        {
-            console.log(tool)
-            var tool = toolList[j];
-            var tool_json = myJson[tool];
-            var length = tool_json.length;
-            for (var i = 0; i < length; i++)
-            {
-                new_row = tbl.insertRow(-1);
-                new_cell1 = new_row.insertCell(0); // creates first cell
-                new_cell2 = new_row.insertCell(1);  // creates second cell
-                new_cell3 = new_row.insertCell(2); // creates third cell
-                new_cell1.innerHTML = tool_json[i].command; // inserts command
-                new_cell2.innerHTML = tool_json[i].description; // inserts description
-                new_cell3.innerHTML = tool_json[i].example;       
-            }        
+<head>
+    <title>Windows Commands</title>
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/0xEct0/Windows-Commands/main/favicon.png">
+    <style>
+        p {
+            font-family: "Helvetica Neue", "Arial", "sans-serif";
+            font-size: 20px;
+            margin-left: 60px;
+            width: 830px;
+            float: left;
         }
-    });
-}
-
-
-// Show only specific tool commands
-function filterButton(chosenFilter)
-{
-    // Clear the search bar text
-    document.getElementById("inputFilter").value = "";
-    
-    // Clear the text search filter
-    const trs = document.querySelectorAll('#DebugTable tr:not(.header)');
-    const filter = document.querySelector('#inputFilter').value;
-    const regex = new RegExp(filter, 'i');
-    const isFoundInTds = (td) => regex.test(td.innerHTML);
-    const isFound = (childrenArr) => childrenArr.some(isFoundInTds);
-    const setTrStyleDisplay = ({ style, children }) => 
-    {
-        style.display = isFound([...children]) ? '' : 'none';
-    };
-    trs.forEach(setTrStyleDisplay);
-    
-    // Clear table except header
-    var table = document.getElementById("DebugTable");
-    for(var i = table.rows.length - 1; i > 0; i--)
-    {
-        table.deleteRow(i);
-    }
-
-    // Add only specific commands
-    // initialize variables to add to table
-    var tbl = document.getElementById('DebugTable');
-    var new_row; // the new row to be added
-    var new_cell1; // first cell in new row
-    var new_cell2; // second cell in new row
-    var new_cell3; // third cell in new row
-    
-    // add the specific commands
-    fetch(command_list_url)
-    .then((response) => 
-    {
-        return response.json();
-    })
-    .then((myJson) => 
-    {
-        // initialize variables to add to table
-        var tbl = document.getElementById('DebugTable');
-        var new_row; // the new row to be added
-        var new_cell1; // first cell in new row
-        var new_cell2; // second cell in new row
-        var new_cell3; // third cell in new row
-        
-        // add the commands
-        var chosen_command = myJson[chosenFilter];
-        var length = chosen_command.length;
-        for (var i = 0; i < length; i++)
-        {
-            new_row = tbl.insertRow(-1);
-            new_cell1 = new_row.insertCell(0); // creates first cell
-            new_cell2 = new_row.insertCell(1);  // creates second cell
-            new_cell3 = new_row.insertCell(2); // creates third cell
-            new_cell1.innerHTML = chosen_command[i].command; // inserts command
-            new_cell2.innerHTML = chosen_command[i].description; // inserts description
-            new_cell3.innerHTML = chosen_command[i].example;      
+        input[type=text] {
+            width: 255px;
+            box-sizing: border-box;
+            border: 2px solid #8be9fd;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: #44475a;
+            padding: 12px 20px 12px 40px;
+            -webkit-transition: width 0.5s ease-in-out;
+            transition: width 0.4s ease-in-out;
+            color: #f5fab9;
         }
-    });
-}
-*/
+        input[type=text]:focus {
+            width: 85%;
+            border: 2px solid #8fffab;
+            outline: none !important;
+        }
+        #DebugTable {
+            margin-left: 60px;
+            border: 1px solid #bd6f5c;
+            border-collapse: collapse;
+            word-wrap: break-word;
+            table-layout: fixed;
+            width: 85%;
+            color: #f8f8f2;
+        }
+        #DebugTable th {
+            background-color: #6272a4;
+            border: 1px solid #44475a;
+            padding: 8px;
+            font-family: monospace;
+            font-size: 25px;
+            text-align: left;
+        }
+        #DebugTable td {
+            border: 2px solid #44475a;
+            padding: 8px;
+            font-family: "Helvetica Neue", "Arial", sans-serif;
+            font-size: 16px;
+        }
+        #DebugTable td:nth-child(1), #DebugTable td:nth-child(3) {
+            font-family: monospace;
+        }
+        .filter_button {
+            background-color: #44475a;
+            border: 2px solid #ff79c6;
+            color: #f8f8f2;
+            padding: 16px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+        .filter_button:hover, .filter_button.active {
+            background-color: #6272a4;
+            color: white;
+        }
+    </style>
+</head>
+<body style="background-color: #282a36">
+    <h1 style="font-family: monospace; margin-left:60px; font-size:40px; color: #f8f8f2">Debugger Commands</h1>
+    <p>This page serves as a reference for various Windows commands commonly used in both command line and in PowerShell.<br>This page can be filtered by either command line or PowerShell commands. Use the buttons below to filter.</p>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <div class="search-box">
+        <input type="text" id="inputFilter" placeholder="Type in a keyword..." onkeyup="typeFilter()">
+    </div>
+    <br><br>
+    <button class="filter_button" style="margin-left: 60px;" onclick="clearFields();">Show All</button>
+    <button class="filter_button" onclick="filterButton('cmd', event);">cmd</button>
+    <button class="filter_button" onclick="filterButton('powershell', event);">powershell</button>
+    <br><br>
+    <table id="DebugTable">
+        <tr class="header">
+            <th width="33%">Command</th>
+            <th width="33%">Description</th>
+            <th width="33%">Example</th>
+        </tr>
+    </table>
 
-// ======================================
-// MAY NEED TO CHANGE THE FOLLOWING BELOW
-// ======================================
-var toolList = ["cmd", "powershell"];
-var command_list_url = 'https://raw.githubusercontent.com/0xEct0/Windows-Commands/main/Commands.json';
+    <script>
+    var toolList = ["cmd", "powershell"];
+    var command_list_url = 'https://raw.githubusercontent.com/0xEct0/Windows-Commands/main/Commands.json';
 
-// Fetches commands and updates the table
-function fetchAndUpdateTable(filter = null) {
-    fetch(command_list_url)
-        .then(response => response.json())
-        .then(myJson => {
-            var tbl = document.getElementById('DebugTable');
-            clearTable();
-            toolList.forEach(tool => {
-                if (!filter || tool === filter) {
-                    myJson[tool].forEach(command => {
-                        addCommandToTable(tbl, command);
-                    });
-                }
+    function fetchAndUpdateTable(filter = null) {
+        fetch(command_list_url)
+            .then(response => response.json())
+            .then(myJson => {
+                var tbl = document.getElementById('DebugTable');
+                clearTable();
+                toolList.forEach(tool => {
+                    if (!filter || tool === filter) {
+                        myJson[tool].forEach(command => {
+                            addCommandToTable(tbl, command);
+                        });
+                    }
+                });
             });
-        });
-}
-
-// Adds a command to the table
-function addCommandToTable(tbl, command) {
-    var new_row = tbl.insertRow(-1);
-    var new_cell1 = new_row.insertCell(0);
-    var new_cell2 = new_row.insertCell(1);
-    var new_cell3 = new_row.insertCell(2);
-    new_cell1.innerHTML = command.command;
-    new_cell2.innerHTML = command.description;
-    new_cell3.innerHTML = command.example;
-}
-
-// Clears the table except for the header
-function clearTable() {
-    var table = document.getElementById("DebugTable");
-    while (table.rows.length > 1) {
-        table.deleteRow(1);
     }
-}
 
-// Text field search
-function typeFilter() {
-    var filter = document.getElementById('inputFilter').value;
-    var trs = document.querySelectorAll('#DebugTable tr:not(.header)');
-    trs.forEach(tr => {
-        var match = Array.from(tr.children).some(td => RegExp(filter, 'i').test(td.innerHTML));
-        tr.style.display = match ? '' : 'none';
+    function addCommandToTable(tbl, command) {
+        var new_row = tbl.insertRow(-1);
+        var new_cell1 = new_row.insertCell(0);
+        var new_cell2 = new_row.insertCell(1);
+        var new_cell3 = new_row.insertCell(2);
+        new_cell1.innerHTML = command.command;
+        new_cell2.innerHTML = command.description;
+        new_cell3.innerHTML = command.example;
+    }
+
+    function clearTable() {
+        var table = document.getElementById("DebugTable");
+        while (table.rows.length > 1) {
+            table.deleteRow(1);
+        }
+    }
+
+    function typeFilter() {
+        var filter = document.getElementById('inputFilter').value;
+        var trs = document.querySelectorAll('#DebugTable tr:not(.header)');
+        trs.forEach(tr => {
+            var match = Array.from(tr.children).some(td => RegExp(filter, 'i').test(td.innerHTML));
+            tr.style.display = match ? '' : 'none';
+        });
+    }
+
+    function clearFields() {
+        document.getElementById("inputFilter").value = "";
+        clearTable();
+        fetchAndUpdateTable();
+        var buttons = document.querySelectorAll('.filter_button');
+        buttons.forEach(button => {
+            button.classList.remove('active');
+        });
+        document.querySelector('.filter_button[style*="margin-left: 60px"]').classList.add('active');
+    }
+
+    function filterButton(chosenFilter, event) {
+        document.getElementById("inputFilter").value = "";
+        fetchAndUpdateTable(chosenFilter);
+        var buttons = document.querySelectorAll('.filter_button');
+        buttons.forEach(button => {
+            button.classList.remove('active');
+        });
+        event.currentTarget.classList.add('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        fetchAndUpdateTable();  // Load all commands initially
     });
-}
-
-// Clears the fields and shows everything
-function clearFields() {
-    document.getElementById("inputFilter").value = "";
-    clearTable();
-    fetchAndUpdateTable();
-}
-
-// Show only specific tool commands
-function filterButton(chosenFilter) {
-    document.getElementById("inputFilter").value = "";
-    fetchAndUpdateTable(chosenFilter);
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    fetchAndUpdateTable();  // Load all commands initially
-});
-</script>
+    </script>
+</body>
+</html>
