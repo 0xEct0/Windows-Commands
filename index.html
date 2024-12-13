@@ -101,6 +101,7 @@
     var command_list_url = 'https://raw.githubusercontent.com/0xEct0/Windows-Commands/main/Commands.json';
 
     function fetchAndUpdateTable(filter = null) {
+        const filterText = document.getElementById('inputFilter').value.toLowerCase(); // Get the current text from the input box
         fetch(command_list_url)
             .then(response => response.json())
             .then(myJson => {
@@ -109,7 +110,12 @@
                 toolList.forEach(tool => {
                     if (!filter || tool === filter) {
                         myJson[tool].forEach(command => {
-                            addCommandToTable(tbl, command);
+                            // Check if the filter text matches the command, description, or example
+                            if (command.command.toLowerCase().includes(filterText) || 
+                                command.description.toLowerCase().includes(filterText) || 
+                                command.example.toLowerCase().includes(filterText)) {
+                                addCommandToTable(tbl, command);
+                            }
                         });
                     }
                 });
@@ -134,12 +140,8 @@
     }
 
     function typeFilter() {
-        var filter = document.getElementById('inputFilter').value;
-        var trs = document.querySelectorAll('#DebugTable tr:not(.header)');
-        trs.forEach(tr => {
-            var match = Array.from(tr.children).some(td => RegExp(filter, 'i').test(td.innerHTML));
-            tr.style.display = match ? '' : 'none';
-        });
+        // Call fetchAndUpdateTable without a filter to apply only text filtering
+        fetchAndUpdateTable();
     }
 
     function resetFilters() {
@@ -165,6 +167,7 @@
         fetchAndUpdateTable();  // Load all commands initially
     });
     </script>
+
 
 </body>
 </html>
