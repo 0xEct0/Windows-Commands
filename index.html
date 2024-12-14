@@ -102,9 +102,10 @@
     <script>
     var toolList = ["cmd", "powershell"];
     var command_list_url = 'https://raw.githubusercontent.com/0xEct0/Windows-Commands/main/Commands.json';
+    var currentFilter = null;  // Stores the currently active filter
 
     function fetchAndUpdateTable(filter = null) {
-        const filterText = document.getElementById('inputFilter').value.toLowerCase(); // Get the current text from the input box
+        const filterText = document.getElementById('inputFilter').value.toLowerCase();
         fetch(command_list_url)
             .then(response => response.json())
             .then(myJson => {
@@ -113,7 +114,6 @@
                 toolList.forEach(tool => {
                     if (!filter || tool === filter) {
                         myJson[tool].forEach(command => {
-                            // Check if the filter text matches the command, description, or example
                             if (command.command.toLowerCase().includes(filterText) || 
                                 command.description.toLowerCase().includes(filterText) || 
                                 command.example.toLowerCase().includes(filterText)) {
@@ -143,11 +143,11 @@
     }
 
     function typeFilter() {
-        // Call fetchAndUpdateTable without a filter to apply only text filtering
-        fetchAndUpdateTable();
+        fetchAndUpdateTable(currentFilter);
     }
 
     function resetFilters() {
+        currentFilter = null;
         document.getElementById("inputFilter").value = "";
         clearTable();
         fetchAndUpdateTable();
@@ -158,6 +158,7 @@
     }
 
     function filterButton(chosenFilter, event) {
+        currentFilter = chosenFilter;
         fetchAndUpdateTable(chosenFilter);
         var buttons = document.querySelectorAll('.filter_button');
         buttons.forEach(button => {
@@ -170,6 +171,7 @@
         fetchAndUpdateTable();  // Load all commands initially
     });
     </script>
+
 
 
 </body>

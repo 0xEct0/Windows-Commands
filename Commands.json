@@ -8,14 +8,34 @@
             "example": "netstat -anop tcp"
         },
         {
-            "command": "sc query",
+            "command": "sc query [service name]",
             "description": "See services installed on a machine",
             "example": "sc query"
+        },
+        {
+            "command": "sc config [service name] binPath=[path]",
+            "description": "Change the binary/executable path of a service",
+            "example": "sc config vulnerable_serice binPath=C:\\Temp\\red_team_svc_binary.exe"
+        },
+        {
+            "command": "sc qc [service name]",
+            "description": "Get information, including the binary (executable) path of a service",
+            "example": "sc qc redteam_service"
         },
         {
             "command": "wmic service get name, pathname",
             "description": "Using WMIC to pull a list of every service and the path to its executable",
             "example": "wmic service get name, pathname"
+        },
+        {
+            "command": "sc start [service name]",
+            "description": "Start a service that was previously stopped",
+            "example": "sc start redteam_service"
+        },
+        {
+            "command": "sc stop [service name]",
+            "description": "Stop a service that was running",
+            "example": "sc stop redteam_service"
         }
     ],
   
