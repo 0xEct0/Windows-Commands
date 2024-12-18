@@ -35,6 +35,11 @@
             "command": "sc stop [service name]",
             "description": "Stop a service that was running",
             "example": "sc stop redteam_service"
+        },
+        {
+            "command": "tasklist",
+            "description": "Diplays running processes. Pair with the /v (verbose) switch to get detailed information about each process, including the username",
+            "example": "tasklist /v"
         }
     ],
   
@@ -44,6 +49,11 @@
             "command": "Get-Service",
             "description": "Gets objects that represent the services on a local computer or on a remote computer. Can be piped into fl to display all available properties of each service object in a list format",
             "example": "Get-Service | fl"
-        }   
+        },
+        {
+            "command": "Get-Process",
+            "description": "Gets a list of running processes. Use the PowerShell command below in the example to extract the name, PID, and User",
+            "example": "Get-Process | Select-Object ProcessName, Id, @{Name='UserName';Expression={(Get-WmiObject -Class Win32_Process -Filter \"ProcessId=$($_.Id)\").GetOwner().User}}"
+        }
     ]
 }
