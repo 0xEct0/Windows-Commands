@@ -52,8 +52,12 @@
         },
         {
             "command": "Get-Process",
-            "description": "Gets a list of running processes. Use the PowerShell command below in the example to extract the name, PID, and User",
+            "description": "Gets a list of running processes. Use the PowerShell command in the example column to extract the name, PID, and User",
             "example": "Get-Process | Select-Object ProcessName, Id, @{Name='UserName';Expression={(Get-WmiObject -Class Win32_Process -Filter \"ProcessId=$($_.Id)\").GetOwner().User}}"
+        },
+        {
+            "command": "Get-MpThreatDetection | sort $_.InitialDetectionTime | select -First 1",
+            "description": "Get-MpThreatDetection gets the history of threats detected by Windows Defender Antivirus, sorting by the initial detection time and only displaying the first (most recent) result"
         }
     ]
 }
